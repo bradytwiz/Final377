@@ -50,7 +50,7 @@ dependencies {
     implementation(libs.androidx.constraintlayout)
     implementation(libs.gson)
     implementation(libs.kotlin.stdlib)
-    implementation(libs.kotlin.stdlib.jdk8)
+    //implementation(libs.kotlin.stdlib.jdk8)
 
     // Lifecycle components
     implementation(libs.androidx.lifecycle.viewmodel.ktx)
