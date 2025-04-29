@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.app.benhuntoon.final_project.repository.MadLibRepository
 import com.app.benhuntoon.final_project.data.database.MadLibEntity
 import kotlinx.coroutines.launch
+import com.google.gson.Gson
 
 class MadLibViewModel(private val repository: MadLibRepository) : ViewModel() {
     private val _wordValidationResult = MutableLiveData<Boolean>()
@@ -18,7 +19,7 @@ class MadLibViewModel(private val repository: MadLibRepository) : ViewModel() {
     private val _nextPlaceholder = MutableLiveData<String>()
     val nextPlaceholder: LiveData<String> = _nextPlaceholder
 
-    private val words = mutableMapOf<String, String>()
+    private val words = mutableListOf<String>()
     private var currentTemplate: String = ""
     private var currentPlaceholderTypes = listOf("adjective", "noun", "verb", "adjective", "noun", "verb", "adverb")
     private var currentPlaceholderIndex = 0
@@ -39,7 +40,7 @@ class MadLibViewModel(private val repository: MadLibRepository) : ViewModel() {
         }
     }
 
-        fun validateWord(word: String) {
+    fun validateWord(word: String) {
         viewModelScope.launch {
             val isValid = repository.validateWord(word)
             _wordValidationResult.postValue(isValid)
@@ -48,8 +49,7 @@ class MadLibViewModel(private val repository: MadLibRepository) : ViewModel() {
 
     fun addWordToMadLib(word: String) {
         if (currentPlaceholderIndex < currentPlaceholderTypes.size) {
-            val placeholderType = currentPlaceholderTypes[currentPlaceholderIndex]
-            words[placeholderType] = word
+            words.add(word) // Add to the List
             currentPlaceholderIndex++
             if (currentPlaceholderIndex < currentPlaceholderTypes.size) {
                 _nextPlaceholder.postValue(currentPlaceholderTypes[currentPlaceholderIndex])
@@ -62,15 +62,17 @@ class MadLibViewModel(private val repository: MadLibRepository) : ViewModel() {
 
     fun getCompletedStory(): String {
         var story = currentTemplate
-        words.forEach { (type, word) ->
-            story = story.replaceFirst("[$type]", word)
+        currentPlaceholderTypes.forEachIndexed { index, type ->
+            if (index < words.size) {
+                story = story.replaceFirst("[$type]", words[index])
+            }
         }
         return story
     }
 
     fun saveCurrentMadLib() {
         val completedStory = getCompletedStory()
-        val filledWordsJson = com.google.gson.Gson().toJson(words)
+        val filledWordsJson = Gson().toJson(words)
         val madLib = MadLibEntity(
             title = "MadLib ${System.currentTimeMillis()}",
             story = completedStory,
