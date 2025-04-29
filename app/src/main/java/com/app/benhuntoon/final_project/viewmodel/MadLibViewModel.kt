@@ -18,7 +18,7 @@ class MadLibViewModel(private val repository: MadLibRepository) : ViewModel() {
     private val _nextPlaceholder = MutableLiveData<String>()
     val nextPlaceholder: LiveData<String> = _nextPlaceholder
 
-    private val words = mutableMapOf<String, String>() // Changed to Map
+    private val words = mutableMapOf<String, String>()
     private var currentTemplate: String = ""
     private var currentPlaceholderTypes = listOf("adjective", "noun", "verb", "adjective", "noun", "verb", "adverb")
     private var currentPlaceholderIndex = 0
@@ -35,18 +35,14 @@ class MadLibViewModel(private val repository: MadLibRepository) : ViewModel() {
         if (currentPlaceholderTypes.isNotEmpty()) {
             _nextPlaceholder.postValue(currentPlaceholderTypes[currentPlaceholderIndex])
         } else {
-            _nextPlaceholder.postValue("") // Or handle no placeholders case
+            _nextPlaceholder.postValue("")
         }
     }
 
-    fun validateWord(word: String) {
+        fun validateWord(word: String) {
         viewModelScope.launch {
-            try {
-                val response = repository.validateWord(word)
-                _wordValidationResult.postValue(response.isSuccessful)
-            } catch (e: Exception) {
-                _wordValidationResult.postValue(false)
-            }
+            val isValid = repository.validateWord(word)
+            _wordValidationResult.postValue(isValid)
         }
     }
 

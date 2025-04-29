@@ -5,17 +5,19 @@ import com.app.benhuntoon.final_project.data.database.MadLibEntity
 import com.app.benhuntoon.final_project.network.WordApi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import retrofit2.Response
 
 class MadLibRepository(
     private val wordApi: WordApi,
     private val madLibDao: MadLibDao
 ) {
-    suspend fun validateWord(word: String) = withContext(Dispatchers.IO) {
-        // TEMPORARY BYPASS
-        return@withContext Response.success(true)
 
-        //wordApi.validateWord(word)
+    suspend fun validateWord(word: String): Boolean = withContext(Dispatchers.IO) {
+        try {
+            val response = wordApi.validateWord(word)
+            response.isSuccessful
+        } catch (e: Exception) {
+            false
+        }
     }
 
     suspend fun saveMadLib(madLib: MadLibEntity) = withContext(Dispatchers.IO) {

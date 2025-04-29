@@ -29,16 +29,3 @@ abstract class MadLibDatabase : RoomDatabase() {
         }
     }
 }
-
-
-//package com.app.benhuntoon.final_project.data.database
-//
-//import androidx.room.Database
-//import androidx.room.RoomDatabase
-//import androidx.room.TypeConverters
-//
-//@Database(entities = [MadLibEntity::class], version = 1, exportSchema = false)
-//@TypeConverters(Converters::class)
-//abstract class MadLibDatabase : RoomDatabase() {
-//    abstract fun madLibDao(): MadLibDao
-//}
