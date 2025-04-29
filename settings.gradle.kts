@@ -19,6 +19,5 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "FinalXml"
+rootProject.name = "Final_project"
 include(":app")
- 

@@ -1,5 +1,3 @@
 <resources>
-    <string name="app_name">FinalXml</string>
-    <string name="favorites">Favorites</string>
-    <string name="home">Home</string>
+    <string name="app_name">Final_project</string>
 </resources>
