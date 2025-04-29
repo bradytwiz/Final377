@@ -15,8 +15,13 @@ class MadLibViewModel(private val repository: MadLibRepository) : ViewModel() {
     private val _madLibComplete = MutableLiveData<Boolean>()
     val madLibComplete: LiveData<Boolean> = _madLibComplete
 
-    private val words = mutableListOf<String>()
+    private val _nextPlaceholder = MutableLiveData<String>()
+    val nextPlaceholder: LiveData<String> = _nextPlaceholder
+
+    private val words = mutableMapOf<String, String>() // Changed to Map
     private var currentTemplate: String = ""
+    private var currentPlaceholderTypes = listOf("adjective", "noun", "verb", "adjective", "noun", "verb", "adverb")
+    private var currentPlaceholderIndex = 0
 
     init {
         loadTemplate()
@@ -26,6 +31,12 @@ class MadLibViewModel(private val repository: MadLibRepository) : ViewModel() {
         currentTemplate = "Once upon a time, there was a [adjective] [noun] who loved to [verb]. " +
                 "One day, they met a [adjective] [noun] and together they [verb] [adverb]."
         words.clear()
+        currentPlaceholderIndex = 0
+        if (currentPlaceholderTypes.isNotEmpty()) {
+            _nextPlaceholder.postValue(currentPlaceholderTypes[currentPlaceholderIndex])
+        } else {
+            _nextPlaceholder.postValue("") // Or handle no placeholders case
+        }
     }
 
     fun validateWord(word: String) {
@@ -40,29 +51,34 @@ class MadLibViewModel(private val repository: MadLibRepository) : ViewModel() {
     }
 
     fun addWordToMadLib(word: String) {
-        words.add(word)
-        if (words.size == 7) {
-            _madLibComplete.postValue(true)
+        if (currentPlaceholderIndex < currentPlaceholderTypes.size) {
+            val placeholderType = currentPlaceholderTypes[currentPlaceholderIndex]
+            words[placeholderType] = word
+            currentPlaceholderIndex++
+            if (currentPlaceholderIndex < currentPlaceholderTypes.size) {
+                _nextPlaceholder.postValue(currentPlaceholderTypes[currentPlaceholderIndex])
+            } else {
+                _madLibComplete.postValue(true)
+                _nextPlaceholder.postValue("")
+            }
         }
     }
 
     fun getCompletedStory(): String {
         var story = currentTemplate
-        val placeholders = listOf("[adjective]", "[noun]", "[verb]", "[adjective]", "[noun]", "[verb]", "[adverb]")
-        words.forEachIndexed { index, word ->
-            if (index < placeholders.size) {
-                story = story.replaceFirst(placeholders[index], word)
-            }
+        words.forEach { (type, word) ->
+            story = story.replaceFirst("[$type]", word)
         }
         return story
     }
 
     fun saveCurrentMadLib() {
         val completedStory = getCompletedStory()
+        val filledWordsJson = com.google.gson.Gson().toJson(words)
         val madLib = MadLibEntity(
             title = "MadLib ${System.currentTimeMillis()}",
             story = completedStory,
-            filledWords = words
+            filledWords = filledWordsJson
         )
         viewModelScope.launch {
             repository.saveMadLib(madLib)

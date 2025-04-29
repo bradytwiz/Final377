@@ -14,6 +14,7 @@ import com.app.benhuntoon.final_project.network.RetrofitInstance
 import com.app.benhuntoon.final_project.repository.MadLibRepository
 import com.app.benhuntoon.final_project.viewmodel.MadLibViewModel
 import com.app.benhuntoon.final_project.viewmodel.MadLibViewModelFactory
+
 class CreateMadLibFragment : Fragment() {
     private var _binding: FragmentCreateMadlibBinding? = null
     private val binding get() = _binding!!
@@ -56,6 +57,10 @@ class CreateMadLibFragment : Fragment() {
             if (isComplete) {
                 showCompletedMadLib()
             }
+        }
+
+        viewModel.nextPlaceholder.observe(viewLifecycleOwner) { placeholderType ->
+            binding.tvWordType.text = placeholderType.capitalize()
         }
     }
 

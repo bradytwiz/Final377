@@ -8,6 +8,6 @@ data class MadLibEntity(
     @PrimaryKey(autoGenerate = true) val id: Int = 0,
     val title: String,
     val story: String,
-    val filledWords: List<String>,
+    val filledWords: String,
     val timestamp: Long = System.currentTimeMillis()
 )
