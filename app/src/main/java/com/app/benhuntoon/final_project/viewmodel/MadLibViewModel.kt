@@ -41,15 +41,18 @@ class MadLibViewModel(private val repository: MadLibRepository) : ViewModel() {
 
     fun addWordToMadLib(word: String) {
         words.add(word)
-        if (words.size == 6) { // Number of placeholders in our template
+        if (words.size == 7) {
             _madLibComplete.postValue(true)
         }
     }
 
     fun getCompletedStory(): String {
         var story = currentTemplate
+        val placeholders = listOf("[adjective]", "[noun]", "[verb]", "[adjective]", "[noun]", "[verb]", "[adverb]")
         words.forEachIndexed { index, word ->
-            story = story.replaceFirst("[...]", word)
+            if (index < placeholders.size) {
+                story = story.replaceFirst(placeholders[index], word)
+            }
         }
         return story
     }
@@ -63,7 +66,7 @@ class MadLibViewModel(private val repository: MadLibRepository) : ViewModel() {
         )
         viewModelScope.launch {
             repository.saveMadLib(madLib)
-            loadTemplate() // Reset for new MadLib
+            loadTemplate()
             _madLibComplete.postValue(false)
         }
     }
