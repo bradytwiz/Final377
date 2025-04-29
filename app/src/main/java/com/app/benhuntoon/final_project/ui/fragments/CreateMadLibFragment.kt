@@ -6,15 +6,29 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.viewModels // Import viewModels delegate
 import com.app.benhuntoon.final_project.R
+import com.app.benhuntoon.final_project.data.database.MadLibDatabase
 import com.app.benhuntoon.final_project.databinding.FragmentCreateMadlibBinding
+import com.app.benhuntoon.final_project.network.RetrofitInstance
+import com.app.benhuntoon.final_project.repository.MadLibRepository // Make sure you have this import
 import com.app.benhuntoon.final_project.viewmodel.MadLibViewModel
+import com.app.benhuntoon.final_project.viewmodel.MadLibViewModelFactory // Import the Factory
 
 class CreateMadLibFragment : Fragment() {
     private var _binding: FragmentCreateMadlibBinding? = null
     private val binding get() = _binding!!
-    private lateinit var viewModel: MadLibViewModel
+
+    // Assuming you have a way to get an instance of MadLibRepository
+    private val madLibRepository: MadLibRepository by lazy {
+        val wordApi = RetrofitInstance.api
+        val madLibDao = MadLibDatabase.getDatabase(requireContext()).madLibDao()
+        MadLibRepository(wordApi, madLibDao)
+    }
+
+    private val viewModel: MadLibViewModel by viewModels {
+        MadLibViewModelFactory(madLibRepository)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -22,12 +36,13 @@ class CreateMadLibFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentCreateMadlibBinding.inflate(inflater, container, false)
-        viewModel = ViewModelProvider(this).get(MadLibViewModel::class.java)
+        return binding.root
+    }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         setupObservers()
         setupClickListeners()
-
-        return binding.root
     }
 
     private fun setupObservers() {
