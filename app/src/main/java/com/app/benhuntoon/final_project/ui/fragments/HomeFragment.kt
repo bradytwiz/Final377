@@ -68,6 +68,13 @@ class HomeFragment : Fragment() {
         storyList.add(Story("Finals Week", 14))
         storyList.add(Story("The Zoo Trip", 8))
         storyList.add(Story("A Day at the Beach", 10))
+        storyList.add(Story("The Weirdest Day", 8))
+        storyList.add(Story("Math Class", 9))
+        storyList.add(Story("Just Setup the Chairs", 11))
+        storyList.add(Story("Free Cake", 5))
+        storyList.add(Story("But I have a Receipt", 17))
+        storyList.add(Story("The Best Burger", 10))
+        storyList.add(Story("Fancy Restaurant", 7))
 
         adapter = StoryAdapter(storyList) { clickedStory: Story ->
             val createMadLibFragment = CreateMadLibFragment()
