@@ -32,11 +32,11 @@ class HomeFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         storyList = mutableListOf()
-        storyList.add(Story("Funny Adventure", 5))
+        storyList.add(Story("Finals Week", 14))
         storyList.add(Story("The Zoo Trip", 8))
         storyList.add(Story("A Day at the Beach", 10))
 
-        adapter = StoryAdapter(storyList) // Create the adapter with the storyList
+        adapter = StoryAdapter(storyList)
         binding.storiesRecyclerView.layoutManager = LinearLayoutManager(requireContext())
         binding.storiesRecyclerView.adapter = adapter
     }
