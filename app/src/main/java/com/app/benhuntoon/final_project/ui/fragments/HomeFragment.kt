@@ -75,6 +75,10 @@ class HomeFragment : Fragment() {
         storyList.add(Story("But I have a Receipt", 17))
         storyList.add(Story("The Best Burger", 10))
         storyList.add(Story("Fancy Restaurant", 7))
+        storyList.add(Story("The Best Movie in the World", 19))
+        storyList.add(Story("Pie Contest", 5))
+        storyList.add(Story("Guys Night", 12))
+        storyList.add(Story("The Longest Weekend", 13))
 
         adapter = StoryAdapter(storyList) { clickedStory: Story ->
             val createMadLibFragment = CreateMadLibFragment()
@@ -83,7 +87,6 @@ class HomeFragment : Fragment() {
                 .addToBackStack(null)
                 .commit()
 
-            // Optional: Pass data to CreateMadLibFragment using arguments
             // val bundle = Bundle()
             // bundle.putString("storyTitle", clickedStory.title)
             // createMadLibFragment.arguments = bundle
