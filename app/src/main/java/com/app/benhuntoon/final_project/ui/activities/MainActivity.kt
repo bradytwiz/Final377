@@ -9,7 +9,6 @@ import com.app.benhuntoon.final_project.ui.fragments.HomeFragment
 import com.app.benhuntoon.final_project.ui.fragments.saved
 
 
-
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding : ActivityMainBinding
@@ -29,9 +28,6 @@ class MainActivity : AppCompatActivity() {
         if (savedInstanceState == null) {
             replaceFragment(HomeFragment())
         }
-
-
-
 
         binding.bottomNavigationView.setOnItemSelectedListener {
             when (it.itemId) {
