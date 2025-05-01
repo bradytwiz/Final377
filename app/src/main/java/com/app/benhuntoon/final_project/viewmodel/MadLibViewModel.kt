@@ -21,7 +21,7 @@ class MadLibViewModel(private val repository: MadLibRepository) : ViewModel() {
 
     private val words = mutableListOf<String>()
     private var currentTemplate: String = ""
-    private var currentPlaceholderTypes = listOf("adjective", "noun", "verb", "adjective", "noun", "verb", "adverb")
+    private var currentPlaceholderTypes = listOf("adjective", "body part", "object", "smell", "action", "adjective", "body part", "location", "number", "animal", "sound", "number", "appliance", "celebrity")
     private var currentPlaceholderIndex = 0
 
     init {
@@ -29,8 +29,16 @@ class MadLibViewModel(private val repository: MadLibRepository) : ViewModel() {
     }
 
     private fun loadTemplate() {
-        currentTemplate = "Once upon a time, there was a [adjective] [noun] who loved to [verb]. " +
-                "One day, they met a [adjective] [noun] and together they [verb] [adverb]."
+        currentTemplate = "It was the one night everybody dreads, the night before finals week starts at NAU " +
+                "The library was full of [adjective] students all glued to their books and [body part] deep in energy drink cans and empty coffee cups " +
+                "One desperate student even had the guts to sneak in a(n) [object]. " +
+                "As expected I couldn't find a decent place to sit so I had to sit next to the dude who smelled like [smell] " +
+                "I began to [action] [adjective]. " +
+                "Finally, at around 5am, Monday morning I started wandering back to my dorm room, but my [body part] was so exhausted that I decided to crash at [location]. " +
+                "I woke up [number] hours later by a not so friendly [animal] who was eating my notes! " +
+                "[sound] I shouted, I am late for my first final! I ran to class as fast as I could but I saw no one. " +
+                "That's when I realized I had been going to the wrong school for [number] years and was actually a [appliance] " +
+                "'Oh well at least I'm still smarter than [celebrity]' "
         words.clear()
         currentPlaceholderIndex = 0
         if (currentPlaceholderTypes.isNotEmpty()) {
@@ -41,9 +49,14 @@ class MadLibViewModel(private val repository: MadLibRepository) : ViewModel() {
     }
 
     fun validateWord(word: String) {
-        viewModelScope.launch {
-            val isValid = repository.validateWord(word)
-            _wordValidationResult.postValue(isValid)
+        val currentType = _nextPlaceholder.value
+        if (currentType == "adjective" || currentType == "noun" || currentType == "verb") {
+            viewModelScope.launch {
+                val isValid = repository.validateWord(word)
+                _wordValidationResult.postValue(isValid)
+            }
+        } else {
+            _wordValidationResult.postValue(true)
         }
     }
 
