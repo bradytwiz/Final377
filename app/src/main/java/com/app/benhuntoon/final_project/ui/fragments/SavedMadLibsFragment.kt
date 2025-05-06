@@ -32,7 +32,6 @@ class SavedMadLibsFragment : Fragment() {
     ): View {
         _binding = FragmentSavedMadlibsBinding.inflate(inflater, container, false)
 
-        // Initialize repository
         val dao = MadLibDatabase.getDatabase(requireContext()).madLibDao()
         val api = RetrofitInstance.api
         val repository = MadLibRepository(api, dao)

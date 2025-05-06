@@ -7,7 +7,6 @@ import com.app.benhuntoon.final_project.R
 import com.app.benhuntoon.final_project.databinding.ActivityMainBinding
 import com.app.benhuntoon.final_project.ui.fragments.HomeFragment
 import com.app.benhuntoon.final_project.ui.fragments.SavedMadLibsFragment
-import com.app.benhuntoon.final_project.ui.fragments.saved
 
 
 class MainActivity : AppCompatActivity() {
