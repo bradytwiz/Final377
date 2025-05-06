@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.app.benhuntoon.final_project.R
 import com.app.benhuntoon.final_project.ui.fragments.SavedMadLibsFragment
 
+//create the saved madlibs activity to hold each saved story
 class SavedMadLibsActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

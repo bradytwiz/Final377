@@ -13,32 +13,35 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var binding : ActivityMainBinding
 
+    //set up the replace fragment function
     private fun replaceFragment(fragment: Fragment){
         val fragmentManager = supportFragmentManager
         val fragmentTransaction = fragmentManager.beginTransaction()
         fragmentTransaction.replace(R.id.frame_layout, fragment)
         fragmentTransaction.commit()
     }
-
+    //create the home fragment
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        //set the default screen to home
         if (savedInstanceState == null) {
             replaceFragment(HomeFragment())
         }
 
+        //set up nav bar listener with navigation mapping
         binding.bottomNavigationView.setOnItemSelectedListener {
             when (it.itemId) {
                 R.id.home -> replaceFragment(HomeFragment())
                 R.id.saved -> replaceFragment(SavedMadLibsFragment())
-                //R.id.saved -> replaceFragment(saved())
-
+                // this is where error screens and potentially other windows could be implemented
                 else -> {
 
                 }
             }
+            //return successful screen swap
             true
         }
     }
