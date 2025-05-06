@@ -6,16 +6,24 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.app.benhuntoon.final_project.R
+import com.app.benhuntoon.final_project.data.database.MadLibDatabase
 import com.app.benhuntoon.final_project.databinding.FragmentSavedMadlibsBinding
+import com.app.benhuntoon.final_project.network.RetrofitInstance
+import com.app.benhuntoon.final_project.network.WordApi
+import com.app.benhuntoon.final_project.repository.MadLibRepository
 import com.app.benhuntoon.final_project.viewmodel.SavedMadLibsViewModel
+import com.app.benhuntoon.final_project.viewmodel.SavedMadLibsViewModelFactory
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
+
 
 class SavedMadLibsFragment : Fragment() {
     private var _binding: FragmentSavedMadlibsBinding? = null
     private val binding get() = _binding!!
     private lateinit var viewModel: SavedMadLibsViewModel
-    private lateinit var madLibsAdapter: MadLibsAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -23,7 +31,15 @@ class SavedMadLibsFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentSavedMadlibsBinding.inflate(inflater, container, false)
-        viewModel = ViewModelProvider(this).get(SavedMadLibsViewModel::class.java)
+
+        // Initialize repository
+        val dao = MadLibDatabase.getDatabase(requireContext()).madLibDao()
+        val api = RetrofitInstance.api
+        val repository = MadLibRepository(api, dao)
+
+        // Initialize ViewModel with factory
+        val factory = SavedMadLibsViewModelFactory(repository)
+        viewModel = ViewModelProvider(this, factory).get(SavedMadLibsViewModel::class.java)
 
         setupRecyclerView()
         observeMadLibs()
@@ -31,11 +47,32 @@ class SavedMadLibsFragment : Fragment() {
         return binding.root
     }
 
+//class SavedMadLibsFragment : Fragment() {
+//    private var _binding: FragmentSavedMadlibsBinding? = null
+//    private val binding get() = _binding!!
+//    private lateinit var viewModel: SavedMadLibsViewModel
+    private lateinit var madLibsAdapter: MadLibsAdapter
+//
+//    override fun onCreateView(
+//        inflater: LayoutInflater,
+//        container: ViewGroup?,
+//        savedInstanceState: Bundle?
+//    ): View {
+//        _binding = FragmentSavedMadlibsBinding.inflate(inflater, container, false)
+//
+//        // Initialize ViewModel (using factory if needed)
+//        viewModel = ViewModelProvider(this).get(SavedMadLibsViewModel::class.java)
+//
+//        setupRecyclerView()
+//        observeMadLibs()
+//
+//        return binding.root
+//    }
+
     private fun setupRecyclerView() {
         madLibsAdapter = MadLibsAdapter { madLib ->
             viewModel.deleteMadLib(madLib.id)
         }
-
         binding.rvSavedMadlibs.apply {
             layoutManager = LinearLayoutManager(context)
             adapter = madLibsAdapter
@@ -43,9 +80,10 @@ class SavedMadLibsFragment : Fragment() {
     }
 
     private fun observeMadLibs() {
-        viewModel.savedMadLibs.observe(viewLifecycleOwner) { madLibs ->
+        // Collect from the StateFlow
+        viewModel.savedMadLibs.onEach { madLibs ->
             madLibsAdapter.submitList(madLibs)
-        }
+        }.launchIn(viewLifecycleOwner.lifecycleScope)
     }
 
     override fun onDestroyView() {
@@ -53,3 +91,47 @@ class SavedMadLibsFragment : Fragment() {
         _binding = null
     }
 }
+
+
+//class SavedMadLibsFragment : Fragment() {
+//    private var _binding: FragmentSavedMadlibsBinding? = null
+//    private val binding get() = _binding!!
+//    private lateinit var viewModel: SavedMadLibsViewModel
+//    private lateinit var madLibsAdapter: MadLibsAdapter
+//
+//    override fun onCreateView(
+//        inflater: LayoutInflater,
+//        container: ViewGroup?,
+//        savedInstanceState: Bundle?
+//    ): View {
+//        _binding = FragmentSavedMadlibsBinding.inflate(inflater, container, false)
+//        viewModel = ViewModelProvider(this).get(SavedMadLibsViewModel::class.java)
+//
+//        setupRecyclerView()
+//        observeMadLibs()
+//
+//        return binding.root
+//    }
+//
+//    private fun setupRecyclerView() {
+//        madLibsAdapter = MadLibsAdapter { madLib ->
+//            viewModel.deleteMadLib(madLib.id)
+//        }
+//
+//        binding.rvSavedMadlibs.apply {
+//            layoutManager = LinearLayoutManager(context)
+//            adapter = madLibsAdapter
+//        }
+//    }
+//
+//    private fun observeMadLibs() {
+//        viewModel.savedMadLibs.observe(viewLifecycleOwner) { madLibs ->
+//            madLibsAdapter.submitList(madLibs)
+//        }
+//    }
+//
+//    override fun onDestroyView() {
+//        super.onDestroyView()
+//        _binding = null
+//    }
+//}

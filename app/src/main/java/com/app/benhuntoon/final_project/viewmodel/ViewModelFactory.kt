@@ -13,3 +13,14 @@ class MadLibViewModelFactory(private val repository: MadLibRepository) : ViewMod
         throw IllegalArgumentException("Unknown ViewModel class")
     }
 }
+
+class SavedMadLibsViewModelFactory(
+    private val repository: MadLibRepository
+) : ViewModelProvider.Factory {
+    override fun <T : ViewModel> create(modelClass: Class<T>): T {
+        if (modelClass.isAssignableFrom(SavedMadLibsViewModel::class.java)) {
+            return SavedMadLibsViewModel(repository) as T
+        }
+        throw IllegalArgumentException("Unknown ViewModel class")
+    }
+}

@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import com.app.benhuntoon.final_project.R
 import com.app.benhuntoon.final_project.databinding.ActivityMainBinding
 import com.app.benhuntoon.final_project.ui.fragments.HomeFragment
+import com.app.benhuntoon.final_project.ui.fragments.SavedMadLibsFragment
 import com.app.benhuntoon.final_project.ui.fragments.saved
 
 
@@ -32,7 +33,8 @@ class MainActivity : AppCompatActivity() {
         binding.bottomNavigationView.setOnItemSelectedListener {
             when (it.itemId) {
                 R.id.home -> replaceFragment(HomeFragment())
-                R.id.saved -> replaceFragment(saved())
+                R.id.saved -> replaceFragment(SavedMadLibsFragment())
+                //R.id.saved -> replaceFragment(saved())
 
                 else -> {
 
