@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.app.benhuntoon.final_project.databinding.FragmentHomeBinding
 import com.app.benhuntoon.final_project.R
 
-data class Story(val title: String, val wordCount: Int)
+data class Story(val title: String, val wordCount: Int, val templateId: String)
 
 class StoryAdapter(
     private val storyList: List<Story>,
@@ -65,31 +65,30 @@ class HomeFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         storyList = mutableListOf()
-        storyList.add(Story("Finals Week", 14))
-        storyList.add(Story("The Zoo Trip", 8))
-        storyList.add(Story("A Day at the Beach", 10))
-        storyList.add(Story("The Weirdest Day", 8))
-        storyList.add(Story("Math Class", 9))
-        storyList.add(Story("Just Setup the Chairs", 11))
-        storyList.add(Story("Free Cake", 5))
-        storyList.add(Story("But I have a Receipt", 17))
-        storyList.add(Story("The Best Burger", 10))
-        storyList.add(Story("Fancy Restaurant", 7))
-        storyList.add(Story("The Best Movie in the World", 19))
-        storyList.add(Story("Pie Contest", 5))
-        storyList.add(Story("Guys Night", 12))
-        storyList.add(Story("The Longest Weekend", 13))
+        storyList.add(Story("Finals Week", 14, "finals_week"))
+        storyList.add(Story("The Zoo Trip", 8, "zoo_trip"))
+        storyList.add(Story("Beach Day", 10,"beach_day"))
+        storyList.add(Story("The Weirdest Day", 8, "weirdest_day"))
+        storyList.add(Story("Math Class", 9, "math_class"))
+        storyList.add(Story("Just Setup the Chairs", 11, "setup_chairs"))
+        storyList.add(Story("Free Cake", 5, "free_cake"))
+        storyList.add(Story("But I have a Receipt", 17, "have_receipt"))
+        storyList.add(Story("The Best Burger", 10, "best_burger"))
+        storyList.add(Story("Fancy Restaurant", 7, "fancy_restaurant"))
+        storyList.add(Story("The Best Movie in the World", 19, "best_movie"))
+        storyList.add(Story("Pie Contest", 5, "pie_contest"))
+        storyList.add(Story("Guys Night", 12, "guys_night"))
+        storyList.add(Story("The Longest Weekend", 13, "longest_weekend"))
 
-        adapter = StoryAdapter(storyList) { clickedStory: Story ->
+        adapter = StoryAdapter(storyList) { clickedStory ->
             val createMadLibFragment = CreateMadLibFragment()
+            val bundle = Bundle()
+            bundle.putString("templateId", clickedStory.templateId) // Pass the templateId
+            createMadLibFragment.arguments = bundle
             parentFragmentManager.beginTransaction()
                 .replace(R.id.frame_layout, createMadLibFragment)
                 .addToBackStack(null)
                 .commit()
-
-            // val bundle = Bundle()
-            // bundle.putString("storyTitle", clickedStory.title)
-            // createMadLibFragment.arguments = bundle
         }
         binding.storiesRecyclerView.layoutManager = LinearLayoutManager(requireContext())
         binding.storiesRecyclerView.adapter = adapter

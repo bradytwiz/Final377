@@ -18,6 +18,7 @@ import com.app.benhuntoon.final_project.viewmodel.MadLibViewModelFactory
 class CreateMadLibFragment : Fragment() {
     private var _binding: FragmentCreateMadlibBinding? = null
     private val binding get() = _binding!!
+    private var currentTemplateId: String? = null
 
     private val madLibRepository: MadLibRepository by lazy {
         val wordApi = RetrofitInstance.api
@@ -27,6 +28,13 @@ class CreateMadLibFragment : Fragment() {
 
     private val viewModel: MadLibViewModel by viewModels {
         MadLibViewModelFactory(madLibRepository)
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        arguments?.let {
+            currentTemplateId = it.getString("templateId")
+        }
     }
 
     override fun onCreateView(
@@ -40,6 +48,11 @@ class CreateMadLibFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        currentTemplateId?.let { templateId ->
+            viewModel.loadTemplate(templateId)
+        } ?: run {
+            viewModel.loadDefaultTemplate()
+        }
         setupObservers()
         setupClickListeners()
     }
