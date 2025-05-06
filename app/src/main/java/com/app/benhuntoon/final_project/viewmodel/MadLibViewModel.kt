@@ -44,8 +44,8 @@ class MadLibViewModel(private val repository: MadLibRepository) : ViewModel() {
         ),
         "math_class" to MadLibData(
             // math jack story time!
-            "",
-            listOf()
+            "Math is my absolute [adjective] favorite school topic. The letters and numbers always [verb] me. Not to mention that when I [verb] a [noun] my math tutor is always on their [noun]! Last week I got a [number] percent on my test, and my mom was really [adjective] about it. Ugh I wish I could just [verb] math, and [verb] it away!",
+            listOf("adjective", "verb", "verb", "noun", "noun", "number", "adjective", "verb", "verb")
         ),
         "setup_chairs" to MadLibData(
             "The task of setting up chairs for the [adjective] event began. First, we had to move all the [plural noun] from the [room] to the [outdoor place]. It felt like we had to carry number] chairs! One person even tried to [verb] a stack of chairs and ended up [adverb] falling. We had to arrange them in [shape] rows. Then, we argued about whether the chairs should face the [direction] or the [direction]. Finally, after much frustration, the last [color] chair was in place. What a [adjective] job!",
