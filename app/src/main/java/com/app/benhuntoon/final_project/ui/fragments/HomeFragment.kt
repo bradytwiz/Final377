@@ -93,8 +93,6 @@ class HomeFragment : Fragment() {
         binding.storiesRecyclerView.adapter = adapter
     }
 
-
-
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
