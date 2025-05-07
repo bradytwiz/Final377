@@ -19,6 +19,15 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".ui.activities.MadLibDetailActivity"
+            android:parentActivityName=".ui.activities.SavedMadLibsActivity">
+            <!-- Optional: enable the “Up” arrow in the toolbar -->
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ui.activities.SavedMadLibsActivity"/>
+        </activity>
+
     </application>
 </manifest>
 

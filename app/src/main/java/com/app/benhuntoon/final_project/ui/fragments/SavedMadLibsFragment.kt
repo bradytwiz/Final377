@@ -1,5 +1,6 @@
 package com.app.benhuntoon.final_project.ui.fragments
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -12,6 +13,7 @@ import com.app.benhuntoon.final_project.data.database.MadLibDatabase
 import com.app.benhuntoon.final_project.databinding.FragmentSavedMadlibsBinding
 import com.app.benhuntoon.final_project.network.RetrofitInstance
 import com.app.benhuntoon.final_project.repository.MadLibRepository
+import com.app.benhuntoon.final_project.ui.activities.MadLibDetailActivity
 import com.app.benhuntoon.final_project.viewmodel.SavedMadLibsViewModel
 import com.app.benhuntoon.final_project.viewmodel.SavedMadLibsViewModelFactory
 import kotlinx.coroutines.flow.launchIn
@@ -50,7 +52,11 @@ class SavedMadLibsFragment : Fragment() {
     //initialize display for each saved madlib
     private fun setupRecyclerView() {
         madLibsAdapter = MadLibsAdapter { madLib ->
-            viewModel.deleteMadLib(madLib.id)
+            val intent = Intent(requireContext(), MadLibDetailActivity::class.java).apply {
+                putExtra("EXTRA_TITLE", madLib.title)
+                putExtra("EXTRA_CONTENT", madLib.story)
+            }
+            startActivity(intent)
         }
         binding.rvSavedMadlibs.apply {
             layoutManager = LinearLayoutManager(context)
