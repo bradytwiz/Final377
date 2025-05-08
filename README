@@ -10,7 +10,7 @@ After submitting the given number of words needed for the madlib you have select
 
 	- If you elect to delete it, it will be erased and then you will be returned to the home page 
 
-	- If you elect to save it, then you will see it saved under a unique ID number so you are able to share and recreate the madlib you just made. 
+	- If you elect to save it, then you will see it saved under a the exact millisecent you saved it so you are able to share and recreate the madlib you just made. 
 
 
 There is also a "saved" tab on the bottom right where you can go to and see Madlibs you have made in the past. Once you select the madlib ID of the one you want to see, you are taken to a new page where you are able to reread the madlib you had previously created. 
