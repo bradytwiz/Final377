@@ -13,12 +13,6 @@
         android:textSize="18sp"
         android:textStyle="bold" />
 
-    <TextView
-        android:id="@+id/tv_madlib_story"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:textSize="16sp" />
 
     <Button
         android:id="@+id/btn_delete"
@@ -26,5 +20,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="end"
         android:layout_marginTop="8dp"
-        android:text="Delete" />
+        android:text="Delete"
+        android:backgroundTint="@color/nav_green"
+        />
 </LinearLayout>
