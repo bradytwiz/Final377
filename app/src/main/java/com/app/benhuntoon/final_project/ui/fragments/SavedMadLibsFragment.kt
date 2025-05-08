@@ -51,13 +51,19 @@ class SavedMadLibsFragment : Fragment() {
 
     //initialize display for each saved madlib
     private fun setupRecyclerView() {
-        madLibsAdapter = MadLibsAdapter { madLib ->
-            val intent = Intent(requireContext(), MadLibDetailActivity::class.java).apply {
-                putExtra("EXTRA_TITLE", madLib.title)
-                putExtra("EXTRA_CONTENT", madLib.story)
+        madLibsAdapter = MadLibsAdapter(
+            onMadLibClicked = { madLib ->
+                val intent = Intent(requireContext(), MadLibDetailActivity::class.java).apply {
+                    putExtra("EXTRA_TITLE", madLib.title)
+                    putExtra("EXTRA_CONTENT", madLib.story)
+                }
+                startActivity(intent)
+            },
+            onDeleteClicked = { madLibToDelete ->
+                //call the ViewModel function to delete the Mad Lib
+                viewModel.deleteMadLib(madLibToDelete.id)
             }
-            startActivity(intent)
-        }
+        )
         binding.rvSavedMadlibs.apply {
             layoutManager = LinearLayoutManager(context)
             adapter = madLibsAdapter

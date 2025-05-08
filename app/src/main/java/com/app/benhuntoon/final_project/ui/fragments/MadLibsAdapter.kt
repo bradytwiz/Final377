@@ -3,6 +3,7 @@ package com.app.benhuntoon.final_project.ui.fragments
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
@@ -11,7 +12,8 @@ import com.app.benhuntoon.final_project.R
 import com.app.benhuntoon.final_project.data.database.MadLibEntity
 
 class MadLibsAdapter(
-    private val onClick: (MadLibEntity) -> Unit
+    private val onMadLibClicked: (MadLibEntity) -> Unit,
+    private val onDeleteClicked: (MadLibEntity) -> Unit
 ) : ListAdapter<MadLibEntity, MadLibsAdapter.MadLibViewHolder>(MadLibDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MadLibViewHolder {
@@ -21,20 +23,26 @@ class MadLibsAdapter(
     }
 
     override fun onBindViewHolder(holder: MadLibViewHolder, position: Int) {
-        holder.bind(getItem(position))
+        holder.bind(getItem(position), onMadLibClicked, onDeleteClicked)
     }
 
     inner class MadLibViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        private val titleTextView: TextView =
-            itemView.findViewById(R.id.tv_madlib_title)
+        private val titleTextView: TextView = itemView.findViewById(R.id.tv_madlib_title)
+        private val deleteButton: Button = itemView.findViewById(R.id.btn_delete)
 
-        fun bind(madLib: MadLibEntity) {
-            // show only the title
+        fun bind(
+            madLib: MadLibEntity,
+            onMadLibClicked: (MadLibEntity) -> Unit,
+            onDeleteClicked: (MadLibEntity) -> Unit
+        ) {
             titleTextView.text = madLib.title
 
-            // when tapped, fire the fragment’s Intent-callback
             itemView.setOnClickListener {
-                onClick(madLib)
+                onMadLibClicked(madLib)
+            }
+
+            deleteButton.setOnClickListener {
+                onDeleteClicked(madLib)
             }
         }
     }
