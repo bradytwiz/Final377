@@ -1,0 +1,18 @@
+Once you install the application and open it. 
+
+You will firstly be met with an interface where you are able to select a madlib of your choice based on the title and then the number of words that are needed for the madlib. 
+
+Once you select a madlib, you are taken to the text entry interface, this is where you will see the type of word you need to fill. 
+
+For example if the text displays "noun" you may enter something like "Dog" and then you must select "validate word" before you are able to submit it. If you try submitting something that has a different part of speech, for example "bark" then you will recieve a notification that the word was rejected for not matching what needs to be entered. 
+
+After submitting the given number of words needed for the madlib you have selected, you will then be shown the completed madlib by the app. After that there are two options for the user, to either favorite the madlib to save it for later or to delete it. 
+
+	- If you elect to delete it, it will be erased and then you will be returned to the home page 
+
+	- If you elect to save it, then you will see it saved under a unique ID number so you are able to share and recreate the madlib you just made. 
+
+
+There is also a "saved" tab on the bottom right where you can go to and see Madlibs you have made in the past. Once you select the madlib ID of the one you want to see, you are taken to a new page where you are able to reread the madlib you had previously created. 
+	- once in this page you are met with a clean interface to allow you to view the madlib in it's entirety, if you wish to navigate back to the saved page, simply swipe from left to right and you will be returned to the 'saved' page. 
+
